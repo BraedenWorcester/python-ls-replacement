@@ -62,7 +62,7 @@ def Reformat(arr):
             newsubarr[1] = subarr[1].ljust(DeterminePadding(arr, 1))
             newsubarr[2] = subarr[2].ljust(DeterminePadding(arr, 2))
             newsubarr[3] = subarr[3].ljust(DeterminePadding(arr, 3))
-            newsubarr[4] = subarr[4].rjust(DeterminePadding(arr, 4))
+            newsubarr[4] = subarr[4].zfill(DeterminePadding(arr, 4)).rjust(DeterminePadding(arr, 4))
             newsubarr[5] = subarr[5].rjust(DeterminePadding(arr, 5))
             newsubarr[6] = subarr[6].zfill(2).rjust(DeterminePadding(arr, 6))
             newsubarr[7] = subarr[7].rjust(DeterminePadding(arr, 7))
