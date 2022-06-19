@@ -56,3 +56,5 @@
     -rw-r--r-- 1 braeden braeden 00 Jun 18 16:56 testFile6.png
     -rw-r--r-- 1 braeden braeden 00 Jun 18 16:56 testFile7.c
     -rw-r--r-- 1 braeden braeden 00 Jun 18 16:56 testFile8.py
+    
+This script was written for Python 3.10.4, and may possibly not function with older versions.
