@@ -14,7 +14,7 @@ itemDeliminator = ""
 itemMaxCharacters = 40
 
 # distance between files on same line; number here doesn't matter, is calculated w/ DeterminePadding()
-itemOffset = 50
+itemOffset = -1
 
 def GetBaseName(fileString):
     return ' '.join(fileString.split()[8:len(fileString)]).lower()
@@ -23,10 +23,10 @@ def GetBaseName(fileString):
 # remember DeterminePadding() returns so we save time not reworking indentical calls
 determinePaddingResults = dict()
 # get the size of the longest nth word from all strings in arr, n = -1 looks for longest length of all words combined; return sum of longest and 2 for a nice padding amount
-def DeterminePadding(arr, n = -1, offset = 1):
+def DeterminePadding(arr, n = -1, offset = 0):
 
     global determinePaddingResults
-    key = hash(str(n)+ "narr" + str(arr))
+    key = hash(str(n)+ "narr" + str(arr) + str(offset))
     if not key in determinePaddingResults:
 
         longest = 0
@@ -62,12 +62,11 @@ def Reformat(arr):
             newsubarr[1] = subarr[1].ljust(DeterminePadding(arr, 1))
             newsubarr[2] = subarr[2].ljust(DeterminePadding(arr, 2))
             newsubarr[3] = subarr[3].ljust(DeterminePadding(arr, 3))
-            newsubarr[4] = subarr[4].zfill(DeterminePadding(arr, 4)).rjust(DeterminePadding(arr, 4))
+            newsubarr[4] = subarr[4].zfill(DeterminePadding(arr, 4))
             newsubarr[5] = subarr[5].rjust(DeterminePadding(arr, 5))
             newsubarr[6] = subarr[6].zfill(2).rjust(DeterminePadding(arr, 6))
             newsubarr[7] = subarr[7].rjust(DeterminePadding(arr, 7))
-            newsubarr[8] = ' ' + subarr[8]
-            newarr.append(''.join(newsubarr))
+            newarr.append(' '.join(newsubarr))
 
     return newarr
         
