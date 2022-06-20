@@ -16,13 +16,33 @@ itemMaxCharacters = 40
 # distance between files on same line; number here doesn't matter, is calculated w/ DeterminePadding()
 itemOffset = -1
 
+filesShouldPrint = True
+directsShouldPrint = True
+verbose = False
+
+def ParseArgs(args):
+
+    global filesShouldPrint
+    global directsShouldPrint
+    global verbose
+
+    for arg in args:
+        if (arg == '-v'):
+            verbose = True
+        if (arg == '-f'):
+            directsShouldPrint = False
+        if (arg == '-d'):
+            filesShouldPrint = False
+    
+    if not filesShouldPrint and not directsShouldPrint:
+        exit()
+
 def GetBaseName(fileString):
     return ' '.join(fileString.split()[8:len(fileString)]).lower()
 
-
 # remember DeterminePadding() returns so we save time not reworking indentical calls
 determinePaddingResults = dict()
-# get the size of the longest nth word from all strings in arr, n = -1 looks for longest length of all words combined; return sum of longest and 2 for a nice padding amount
+# get the size of the longest nth word from all strings in arr, n = -1 looks for longest length of all words combined; return sum of longest and offset for a nice padding amount
 def DeterminePadding(arr, n = -1, offset = 0):
 
     global determinePaddingResults
@@ -71,20 +91,12 @@ def Reformat(arr):
     return newarr
         
 
-
+ParseArgs(sys.argv)
 cmd = subprocess.Popen(['ls', '-al'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 lines = cmd.communicate()[0].splitlines()
 
 directs = []
 files = []
-
-try:
-    if (sys.argv[1] == "-v"):
-        verbose = True  
-    else:
-        verbose = False
-except IndexError:
-    verbose = False
 
 for line in lines:
     if (len(line.split()) > 8):
@@ -94,9 +106,9 @@ for line in lines:
             tokenized[loc] = token.decode(sys.stdout.encoding)
 
         out = tokenized
-        if (chr(line[0]) == 'd'):
+        if (chr(line[0]) == 'd' and directsShouldPrint):
             directs.append(out)
-        elif (chr(line[0]) == '-'):
+        elif (chr(line[0]) == '-' and filesShouldPrint):
             files.append(out)
 
 directs = Reformat(directs)
@@ -110,32 +122,34 @@ else:
     directs = sorted(directs, key=str.lower)
     files = sorted(files, key=str.lower)
 
+if directsShouldPrint:
+    itemOffset = DeterminePadding(directs, offset=2)
+    itemsInRow = 0
+    print("")
+    print("\n----DIRECTORIES----\n")
+    for out in directs:
+        if not verbose and len(out) > itemMaxCharacters:
+            out = out[:itemMaxCharacters] + "..."
+        if (not verbose and itemsInRow < itemsPerRow-1) or (verbose and itemsInRow < itemsPerRowVerbose-1):
+            itemsInRow += 1
+            print(out.ljust(itemOffset), end=itemDeliminator)
+        else:
+            itemsInRow = 0
+            print(out)
 
-itemOffset = DeterminePadding(directs, offset=2)
-itemsInRow = 0
-print("")
-print("\n----DIRECTORIES----\n")
-for out in directs:
-    if not verbose and len(out) > itemMaxCharacters:
-        out = out[:itemMaxCharacters] + "..."
-    if (not verbose and itemsInRow < itemsPerRow-1) or (verbose and itemsInRow < itemsPerRowVerbose-1):
-        itemsInRow += 1
-        print(out.ljust(itemOffset), end=itemDeliminator)
-    else:
-        itemsInRow = 0
-        print(out)
-
-itemOffset = DeterminePadding(files, offset=2)
-itemsInRow = 0
-print("")
-print("\n----FILES----\n")
-for out in files:
-    if not verbose and len(out) > itemMaxCharacters:
-        out = out[:itemMaxCharacters] + "..."
-    if (not verbose and itemsInRow < itemsPerRow-1) or (verbose and itemsInRow < itemsPerRowVerbose-1):
-        itemsInRow += 1
-        print(out.ljust(itemOffset), end=itemDeliminator)
-    else:
-        itemsInRow = 0
-        print(out)
+if filesShouldPrint:
+    itemOffset = DeterminePadding(files, offset=2)
+    itemsInRow = 0
+    print("")
+    print("\n----FILES----\n")
+    for out in files:
+        if not verbose and len(out) > itemMaxCharacters:
+            out = out[:itemMaxCharacters] + "..."
+        if (not verbose and itemsInRow < itemsPerRow-1) or (verbose and itemsInRow < itemsPerRowVerbose-1):
+            itemsInRow += 1
+            print(out.ljust(itemOffset), end=itemDeliminator)
+        else:
+            itemsInRow = 0
+            print(out)
+            
 print("\n")
