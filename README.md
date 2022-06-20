@@ -9,6 +9,8 @@
   Arguments:
   
     -v: # sets verbose mode - if not set: all but the base file names will be excluded from output
+    -f: # excludes directories from output, leaving only regular files
+    -d: # excludes regular files from output, leaving only directories - if both -d and -f are set, the script will terminate without any output
     
 # Output:  
     
@@ -56,5 +58,43 @@
     -rw-r--r-- 1 braeden braeden 0 Jun 18 16:56 testFile6.png
     -rw-r--r-- 1 braeden braeden 0 Jun 18 16:56 testFile7.c
     -rw-r--r-- 1 braeden braeden 0 Jun 18 16:56 testFile8.py
+    
+    
+    # do not print directories; only print files
+    $ lss -f
+
+    ----FILES----
+
+    testFile1      testFile2.txt  testFile3.jpg
+    testFile4.gfx  testFile5.pdf  testFile6.png
+    testFile7.c    testFile8.py
+    
+    
+    # do not print files; only print directories
+    $ lss -d
+
+    ----DIRECTORIES----
+
+    .         ..        testDir1
+    testDir2  testDir3  testDir4
+    testDir5  testDir6  testDir7
+    testDir8
+    
+    
+    # only print directories, verbose mode set
+    $ lss -d -v
+    
+    ----DIRECTORIES----
+
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:56 .
+    drwxr-x--x 1 braeden braeden 512 Jun 18 19:14 ..
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir1
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir2
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir3
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir4
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir5
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir6
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir7
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir8
     
 This script was written for Python 3.10.4, and may possibly not function with older versions.
