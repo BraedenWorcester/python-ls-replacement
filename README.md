@@ -111,5 +111,8 @@ order output by row
     testFile4.gfx  testFile5.pdf  testFile6.png
     testFile7.c    testFile8.py
 
+# Requirements:
 
-This script was written for Python 3.10.4, and may possibly not function with older versions.
+This script requires the numpy library installed: https://numpy.org/install/
+
+This script was written for Python 3.10.4, and may possibly not function with earlier versions.
