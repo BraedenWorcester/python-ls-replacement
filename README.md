@@ -115,4 +115,6 @@ order output by row
 
 This script requires the numpy library installed: https://numpy.org/install/
 
+This script should only be ran in Linux environments.
+
 This script was written for Python 3.10.4, and may possibly not function with earlier versions.
