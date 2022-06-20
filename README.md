@@ -34,27 +34,27 @@
 
     ----DIRECTORIES----
 
-    drwxr-xr-x 1 braeden braeden 0512 Jun 18 16:56 .
-    drwxr-x--x 1 braeden braeden 0512 Jun 18 16:54 ..
-    drwxr-xr-x 1 braeden braeden 0512 Jun 18 16:54 testDir1
-    drwxr-xr-x 1 braeden braeden 0512 Jun 18 16:54 testDir2
-    drwxr-xr-x 1 braeden braeden 0512 Jun 18 16:54 testDir3
-    drwxr-xr-x 1 braeden braeden 0512 Jun 18 16:54 testDir4
-    drwxr-xr-x 1 braeden braeden 0512 Jun 18 16:54 testDir5
-    drwxr-xr-x 1 braeden braeden 0512 Jun 18 16:54 testDir6
-    drwxr-xr-x 1 braeden braeden 0512 Jun 18 16:54 testDir7
-    drwxr-xr-x 1 braeden braeden 0512 Jun 18 16:54 testDir8
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:56 .
+    drwxr-x--x 1 braeden braeden 512 Jun 18 16:54 ..
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir1
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir2
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir3
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir4
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir5
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir6
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir7
+    drwxr-xr-x 1 braeden braeden 512 Jun 18 16:54 testDir8
 
 
     ----FILES----
 
-    -rw-r--r-- 1 braeden braeden 00 Jun 18 16:56 testFile1
-    -rw-r--r-- 1 braeden braeden 00 Jun 18 16:56 testFile2.txt
-    -rw-r--r-- 1 braeden braeden 00 Jun 18 16:56 testFile3.jpg
-    -rw-r--r-- 1 braeden braeden 00 Jun 18 16:56 testFile4.gfx
-    -rw-r--r-- 1 braeden braeden 00 Jun 18 16:56 testFile5.pdf
-    -rw-r--r-- 1 braeden braeden 00 Jun 18 16:56 testFile6.png
-    -rw-r--r-- 1 braeden braeden 00 Jun 18 16:56 testFile7.c
-    -rw-r--r-- 1 braeden braeden 00 Jun 18 16:56 testFile8.py
+    -rw-r--r-- 1 braeden braeden 0 Jun 18 16:56 testFile1
+    -rw-r--r-- 1 braeden braeden 0 Jun 18 16:56 testFile2.txt
+    -rw-r--r-- 1 braeden braeden 0 Jun 18 16:56 testFile3.jpg
+    -rw-r--r-- 1 braeden braeden 0 Jun 18 16:56 testFile4.gfx
+    -rw-r--r-- 1 braeden braeden 0 Jun 18 16:56 testFile5.pdf
+    -rw-r--r-- 1 braeden braeden 0 Jun 18 16:56 testFile6.png
+    -rw-r--r-- 1 braeden braeden 0 Jun 18 16:56 testFile7.c
+    -rw-r--r-- 1 braeden braeden 0 Jun 18 16:56 testFile8.py
     
 This script was written for Python 3.10.4, and may possibly not function with older versions.
