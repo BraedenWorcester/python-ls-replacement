@@ -1,11 +1,9 @@
 import subprocess
 import sys
+import numpy as np
 
 # number of files on a single output line in non-verbose mode
 itemsPerRow = 3
-
-# number of files on a single output line in verbose mode
-itemsPerRowVerbose = 1
 
 # what we want to put in between distinct files on the same output line; I personally prefer nothing
 itemDeliminator = ""
@@ -16,23 +14,30 @@ itemMaxCharacters = 40
 # distance between files on same line; number here doesn't matter, is calculated w/ DeterminePadding()
 itemOffset = -1
 
+printHorizontally = False
 filesShouldPrint = True
 directsShouldPrint = True
 verbose = False
 
 def ParseArgs(args):
 
+    global printHorizontally
     global filesShouldPrint
     global directsShouldPrint
     global verbose
+    global itemsPerRow
 
     for arg in args:
         if (arg == '-v'):
             verbose = True
+            itemsPerRow = 1
+            printHorizontally = False
         if (arg == '-f'):
             directsShouldPrint = False
         if (arg == '-d'):
             filesShouldPrint = False
+        if (arg == '-h' and not verbose):
+            printHorizontally = True
     
     if not filesShouldPrint and not directsShouldPrint:
         exit()
@@ -40,27 +45,35 @@ def ParseArgs(args):
 def GetBaseName(fileString):
     return ' '.join(fileString.split()[8:len(fileString)]).lower()
 
+
+def RoundOffArr(arr):
+    while arr.size % itemsPerRow != 0:
+        arr = np.append(arr, "...")
+    return arr
+
 # remember DeterminePadding() returns so we save time not reworking indentical calls
 determinePaddingResults = dict()
 # get the size of the longest nth word from all strings in arr, n = -1 looks for longest length of all words combined; return sum of longest and offset for a nice padding amount
 def DeterminePadding(arr, n = -1, offset = 0):
-
     global determinePaddingResults
     key = hash(str(n)+ "narr" + str(arr) + str(offset))
     if not key in determinePaddingResults:
 
         longest = 0
-        for string in arr:
+        for row in arr:
             if not n == -1:
                 try:
-                    tokenized = string.split()
+                    tokenized = row.split()
                 except AttributeError:
-                    tokenized = string
+                    tokenized = row
                 length = len(tokenized[n])
+                if length > longest:
+                        longest = length
             else:
-                length = len(string)
-            if length > longest:
-                longest = length
+                for string in row:
+                    length = len(string)
+                    if length > longest:
+                        longest = length
 
         if longest > itemMaxCharacters and not verbose:
             longest = itemMaxCharacters + 3 # + 3 accounts for the '...' at the end of cut off file names
@@ -122,34 +135,58 @@ else:
     directs = sorted(directs, key=str.lower)
     files = sorted(files, key=str.lower)
 
+# convert lists to numpy arrays
+directs = np.array(directs)
+files = np.array(files)
+
+# make array sizes divisible by itemsPerRow
+directs = RoundOffArr(directs)
+files = RoundOffArr(files)
+
+# convert to 2D arrays
+if not printHorizontally:
+    directs.shape = (itemsPerRow, -1)
+    files.shape = (itemsPerRow, -1)
+else:
+    directs.shape = (-1, itemsPerRow)
+    files.shape = (-1, itemsPerRow)
+
+# transpose array such that values are printed by column rather than by row
+if not printHorizontally:
+    directs = np.transpose(directs)
+    files = np.transpose(files)
+
+
 if directsShouldPrint:
+
     itemOffset = DeterminePadding(directs, offset=2)
-    itemsInRow = 0
     print("")
     print("\n----DIRECTORIES----\n")
-    for out in directs:
-        if not verbose and len(out) > itemMaxCharacters:
-            out = out[:itemMaxCharacters] + "..."
-        if (not verbose and itemsInRow < itemsPerRow-1) or (verbose and itemsInRow < itemsPerRowVerbose-1):
-            itemsInRow += 1
-            print(out.ljust(itemOffset), end=itemDeliminator)
-        else:
-            itemsInRow = 0
-            print(out)
+    i = 0
+    j = 0
+    while i < directs[:,0].size:
+        while j < directs[0,:].size:
+            if not directs[i,j] == "...":
+                print(directs[i,j].ljust(itemOffset), end=itemDeliminator)
+            j += 1
+        print()
+        j = 0
+        i += 1
 
 if filesShouldPrint:
+
     itemOffset = DeterminePadding(files, offset=2)
-    itemsInRow = 0
     print("")
     print("\n----FILES----\n")
-    for out in files:
-        if not verbose and len(out) > itemMaxCharacters:
-            out = out[:itemMaxCharacters] + "..."
-        if (not verbose and itemsInRow < itemsPerRow-1) or (verbose and itemsInRow < itemsPerRowVerbose-1):
-            itemsInRow += 1
-            print(out.ljust(itemOffset), end=itemDeliminator)
-        else:
-            itemsInRow = 0
-            print(out)
+    i = 0
+    j = 0
+    while i < files[:,0].size:
+        while j < files[0,:].size:
+            if not files[i,j] == "...":
+                print(files[i,j].ljust(itemOffset), end=itemDeliminator)
+            j += 1
+        print()
+        j = 0
+        i += 1
             
 print("\n")
