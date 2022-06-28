@@ -11,6 +11,8 @@ itemDeliminator = ""
 # maximum amount of displayed characters per file in non-verbose mode
 itemMaxCharacters = 40
 
+
+
 # distance between files on same line; number here doesn't matter, is calculated w/ DeterminePadding()
 itemOffset = -1
 
@@ -18,6 +20,7 @@ printHorizontally = False
 filesShouldPrint = True
 directsShouldPrint = True
 verbose = False
+itemHasCharacterLimit = True
 
 def ParseArgs(args):
 
@@ -26,6 +29,7 @@ def ParseArgs(args):
     global directsShouldPrint
     global verbose
     global itemsPerRow
+    global itemHasCharacterLimit
 
     for arg in args:
         if (arg == '-v'):
@@ -38,6 +42,8 @@ def ParseArgs(args):
             filesShouldPrint = False
         if (arg == '-h' and not verbose):
             printHorizontally = True
+        if (arg == '-u'):
+            itemHasCharacterLimit = False
     
     if not filesShouldPrint and not directsShouldPrint:
         exit()
@@ -75,7 +81,7 @@ def DeterminePadding(arr, n = -1, offset = 0):
                     if length > longest:
                         longest = length
 
-        if longest > itemMaxCharacters and not verbose:
+        if (longest > itemMaxCharacters) and (not verbose) and (itemHasCharacterLimit):
             longest = itemMaxCharacters + 3 # + 3 accounts for the '...' at the end of cut off file names
         determinePaddingResults[key] = longest + offset
 
@@ -88,7 +94,10 @@ def Reformat(arr):
     newarr = []
     for subarr in arr:
         if not verbose:
-            newarr.append(' '.join(subarr[8:]))
+            newString = ' '.join(subarr[8:])
+            if (len(newString) > itemMaxCharacters) and (itemHasCharacterLimit):
+                newString = newString[:itemMaxCharacters-1] + "..."
+            newarr.append(newString)
         else:
             newsubarr = subarr.copy()
             newsubarr[0] = subarr[0].ljust(DeterminePadding(arr, 0))
