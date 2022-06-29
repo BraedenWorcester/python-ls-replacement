@@ -12,6 +12,7 @@ Arguments:
     -f: # excludes directories from output, leaving only regular files
     -d: # excludes regular files from output, leaving only directories - if both -d and -f are set, the script will terminate without any output
     -h: # will order output horizontally, rather than vertically
+    -u: # uncaps amount of characters allowed per line
     
 # Output:  
     
